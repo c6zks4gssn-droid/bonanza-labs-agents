@@ -1,8 +1,8 @@
 """Workflow orchestrator — runs multi-agent workflows."""
 
 from __future__ import annotations
-from .models import Workflow, WorkflowStep, Task, TaskStatus
-from .runtime.engine import AgentRuntime
+from bonanza_agents.core.models import Workflow, WorkflowStep, Task, TaskStatus
+from bonanza_agents.runtime.engine import AgentRuntime
 
 
 class WorkflowOrchestrator:

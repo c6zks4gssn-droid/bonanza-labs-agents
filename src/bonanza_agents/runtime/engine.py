@@ -4,7 +4,7 @@ from __future__ import annotations
 import json
 import httpx
 from typing import Optional
-from .models import Agent, Task, TaskStatus, ToolType
+from bonanza_agents.core.models import Agent, Task, TaskStatus, ToolType
 
 
 class AgentRuntime:

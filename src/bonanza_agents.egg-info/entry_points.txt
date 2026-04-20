@@ -1,0 +1,2 @@
+[console_scripts]
+bonanza-agents = bonanza_agents.cli:main
