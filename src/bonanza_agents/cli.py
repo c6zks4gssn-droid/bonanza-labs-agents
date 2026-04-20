@@ -57,5 +57,76 @@ def list_agents():
     console.print("   Create one with: bonanza-agents create --name MyAgent")
 
 
+@main.command()
+def avatars():
+    """List available HeyGen avatars."""
+    try:
+        from bonanza_agents.tools.avatar import HeyGenClient
+        client = HeyGenClient()
+        avatars = client.list_avatars()
+        if not avatars:
+            console.print("[yellow]No avatars found. Set HEYGEN_API_KEY.[/]")
+            return
+        table = Table(title="🎭 Available Avatars")
+        table.add_column("ID", style="dim")
+        table.add_column("Name", style="bold")
+        table.add_column("Gender")
+        table.add_column("Type")
+        for a in avatars[:10]:
+            table.add_row(a.avatar_id[:12] + "...", a.name, a.gender, a.type)
+        console.print(table)
+    except ValueError as e:
+        console.print(f"[red]{e}[/]")
+    except Exception as e:
+        console.print(f"[red]Error: {e}[/]")
+
+
+@main.command()
+@click.argument("script")
+@click.option("--anchor", "-a", default="female_pro", help="Anchor preset (female_pro, male_pro, female_casual, male_casual)")
+@click.option("--format", "-f", default="16:9", help="Aspect ratio (16:9, 9:16)")
+@click.option("--bg", default="#0a0a0f", help="Background hex color")
+def news(script, anchor, format, bg):
+    """Create an AI news video with human avatar."""
+    try:
+        from bonanza_agents.tools.avatar import HeyGenClient
+        client = HeyGenClient()
+        console.print(f"[bold]🎬 Creating news video...[/]")
+        console.print(f"   Anchor: {anchor} | Format: {format}")
+        result = client.create_news_video(script=script, anchor=anchor, aspect_ratio=format, background=bg)
+        if result.error:
+            console.print(f"[red]❌ {result.error}[/]")
+            return
+        console.print(f"[green]✅ Video created![/] ID: {result.video_id}")
+        console.print(f"   Status: {result.status}")
+        console.print(f"   Poll with: bonanza-agents status {result.video_id}")
+    except ValueError as e:
+        console.print(f"[red]{e}[/]")
+    except Exception as e:
+        console.print(f"[red]Error: {e}[/]")
+
+
+@main.command()
+@click.argument("video_id")
+def status(video_id):
+    """Check video generation status."""
+    try:
+        from bonanza_agents.tools.avatar import HeyGenClient
+        client = HeyGenClient()
+        result = client.get_video_status(video_id)
+        console.print(f"Video: {result.video_id}")
+        console.print(f"Status: {result.status}")
+        if result.video_url:
+            console.print(f"[green]URL: {result.video_url}[/]")
+        if result.thumbnail_url:
+            console.print(f"Thumbnail: {result.thumbnail_url}")
+        if result.error:
+            console.print(f"[red]Error: {result.error}[/]")
+    except ValueError as e:
+        console.print(f"[red]{e}[/]")
+    except Exception as e:
+        console.print(f"[red]Error: {e}[/]")
+
+
 if __name__ == "__main__":
     main()

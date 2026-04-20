@@ -14,3 +14,4 @@ src/bonanza_agents/orchestrator/workflow.py
 src/bonanza_agents/runtime/__init__.py
 src/bonanza_agents/runtime/engine.py
 src/bonanza_agents/tools/__init__.py
+src/bonanza_agents/tools/avatar.py
