@@ -17,3 +17,4 @@ node_modules/
 .ruff_cache/
 htmlcov/
 .coverage
+__pycache__/
